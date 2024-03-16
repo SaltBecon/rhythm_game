@@ -302,7 +302,7 @@ function drawList(){
     ctx.fill();
     ctx.globalCompositeOperation = "source-over";
     ctx.beginPath();
-    ctx.font = "100px monospace";
+    ctx.font = "36px monospace";
     ctx.fillStyle = "#000000";
     ctx.textAlign = "center";
     ctx.fillText(musicList[musicListIndex]["title"], canvas.width / 4, canvas.height / 2 + 10);
