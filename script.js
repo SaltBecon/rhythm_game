@@ -305,7 +305,7 @@ function drawList(){
     ctx.font = "36px monospace";
     ctx.fillStyle = "#000000";
     ctx.textAlign = "center";
-    ctx.fillText(musicList[musicListIndex]["title"], canvas.width / 4, canvas.height / 2 + 10);
+    ctx.fillText(musicList[musicListIndex]["title"], canvas.width / 4, canvas.height / 2 + 12);
 }
 function drawGame(){
     ctx.clearRect(0, 0, canvas.width, canvas.height);
