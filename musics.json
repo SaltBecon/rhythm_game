@@ -1,0 +1,11 @@
+[
+    {
+        "title":"あけましておめでとうございます",
+        "music":"SaltBecon",
+        "chart":"SaltBecon",
+        "musicfile":"正月のやつ.ogg",
+        "chartfile":"正月のやつ.json",
+        "level":[0, 0, 10],
+        "demostart":108
+    }
+]

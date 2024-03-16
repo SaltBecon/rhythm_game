@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>キーコード一覧</title>
+  </head>
+  <body>
+    <p id="display"></p>
+    <div style="font-size:0;">
+      <div style="display:inline-block; height:20px; width:41.7px; background-color:blue;"></div>
+      <div style="display:inline-block; height:20px; width:41.7px; background-color:magenta;"></div>
+      <div style="display:inline-block; height:20px; width:25px; background-color:cyan;"></div>
+      <div style="display:inline-block; height:20px; width:16.7px; background-color:green;"></div>
+      <p style="display:inline-block; font-size:10px">PS</p>
+    </div>
+    <div style="font-size:0;">
+      <div style="display:inline-block; height:20px; width:80px; background-color:blue;"></div>
+      <div style="display:inline-block; height:20px; width:80px; background-color:magenta;"></div>
+      <div style="display:inline-block; height:20px; width:20px; background-color:cyan;"></div>
+      <p style="display:inline-block; font-size:10px">Phi</p>
+    </div>
+    <div style="font-size:0;">
+      <div style="display:inline-block; height:20px; width:25.025px; background-color:blue;"></div>
+      <div style="display:inline-block; height:20px; width:50.05px; background-color:magenta;"></div>
+      <div style="display:inline-block; height:20px; width:33.367px; background-color:cyan;"></div>
+      <p style="display:inline-block; font-size:10px">太鼓</p>
+    </div>
+    <div style="font-size:0;">
+      <div style="display:inline-block; height:20px; width:60px; background-color:blue;"></div>
+      <div style="display:inline-block; height:20px; width:60px; background-color:magenta;"></div>
+      <p style="display:inline-block; font-size:10px">案1</p>
+    </div>
+    <div style="font-size:0;">
+      <div style="display:inline-block; height:20px; width:50px; background-color:blue;"></div>
+      <div style="display:inline-block; height:20px; width:40px; background-color:magenta;"></div>
+      <div style="display:inline-block; height:20px; width:30px; background-color:cyan;"></div>
+      <p style="display:inline-block; font-size:10px">案2</p>
+    </div>
+
+    <script>
+        let codes = [];
+        document.addEventListener("keydown", function(e){
+            var idx = codes.indexOf(e.keyCode);
+            if(idx >= 0){
+                codes.splice(idx, 1); 
+            }
+            codes.push(e.keyCode);
+            document.getElementById("display").innerHTML = codes;
+        });
+
+        document.addEventListener("keyup", function(e){
+            var idx = codes.indexOf(e.keyCode);
+            if(idx >= 0){
+                codes.splice(idx, 1); 
+            }
+            document.getElementById("display").innerHTML = codes;
+        });
+    </script>
+  </body>
+</html>
