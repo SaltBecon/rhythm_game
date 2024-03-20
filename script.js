@@ -1,4 +1,4 @@
-import musicList from "/musics.json" assert { type: "json" };
+import musicList from "https://saltbecon.github.io/rhythm_game/musics.json" assert { type: "json" };
 //import chart_newyear from "https://saltbecon.github.io/rhythm_game/charts/正月のやつ.json" assert { type: "json" };
 //選曲用
 let musicListIndex = 0;
