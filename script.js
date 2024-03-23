@@ -2,7 +2,7 @@ import musicList from "https://saltbecon.github.io/rhythm_game/musics.json" asse
 //import chart_newyear from "https://saltbecon.github.io/rhythm_game/charts/正月のやつ.json" assert { type: "json" };
 //選曲用
 let musicListIndex = 0;
-let difficulty = 0;//0:Easy, 1:Normal, 2:Hard
+let level = 0;//0:Easy, 1:Normal, 2:Hard
 let situation = 1;
 //譜面用
 let disappeared = [];
@@ -294,6 +294,8 @@ for (let i = 0; i < 6; i++){
     sixRandoms.push(Math.random() * 2 - 1);
 }
 const listFontSize = [30, 36];
+let levelColor = "#00ffff";
+let levelX = canvas.width * 13 / 24;
 function drawList(){
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     ctx.lineWidth = 4;
@@ -301,28 +303,28 @@ function drawList(){
     ctx.globalCompositeOperation = "lighter";
     ctx.beginPath();
     ctx.fillStyle = "#ffffff";
-    ctx.fillRect(canvas.width / 4 - 300, canvas.height / 2 - 30, 600, 60);
+    ctx.fillRect(canvas.width / 4 - canvas.width / 6 - 20, canvas.height / 2 - 30, canvas.width / 3 + 40, 60);
     ctx.beginPath();
     ctx.fillStyle = "#ff0000";
     ctx.strokeStyle = "#ff0000";
-    ctx.strokeRect(canvas.width / 4 - 280 + sixRandoms[0], -10, 560, canvas.height + 20);
+    ctx.strokeRect(canvas.width / 4 - canvas.width / 6 + sixRandoms[0], -10, canvas.width / 3, canvas.height + 20);
     ctx.beginPath();
     ctx.fillStyle = "#00ff00";
     ctx.strokeStyle = "#00ff00";
-    ctx.strokeRect(canvas.width / 4 - 280 + sixRandoms[2], -10, 560, canvas.height + 20);
+    ctx.strokeRect(canvas.width / 4 - canvas.width / 6 + sixRandoms[2], -10, canvas.width / 3, canvas.height + 20);
     ctx.beginPath();
     ctx.fillStyle = "#0000ff";
     ctx.strokeStyle = "#0000ff";
-    ctx.strokeRect(canvas.width / 4 - 280 + sixRandoms[4], -10, 560, canvas.height + 20);
+    ctx.strokeRect(canvas.width / 4 - canvas.width / 6 + sixRandoms[4], -10, canvas.width / 3, canvas.height + 20);
     //リスト 前のレイヤー
     ctx.globalCompositeOperation = "source-atop";
     ctx.beginPath();
     ctx.font = `${listFontSize[1]}px monospace`;
     ctx.fillStyle = "#000000";
     ctx.textAlign = "center";
-    ctx.fillText(musicList[((musicListIndex - 1) % musicList.length + musicList.length) % musicList.length]["title"], canvas.width / 4, canvas.height / 2 + listFontSize[1] / 3 + listFontSize[1] * (scroll - listInterval) / listFontSize[0], 560);
-    ctx.fillText(musicList[musicListIndex]["title"], canvas.width / 4, canvas.height / 2 + listFontSize[1] / 3 + listFontSize[1] * scroll / listFontSize[0], 560);
-    ctx.fillText(musicList[(musicListIndex + 1) % musicList.length]["title"], canvas.width / 4, canvas.height / 2 + listFontSize[1] / 3 + listFontSize[1] * (scroll + listInterval) / listFontSize[0], 560);
+    ctx.fillText(musicList[((musicListIndex - 1) % musicList.length + musicList.length) % musicList.length]["title"], canvas.width / 4, canvas.height / 2 + listFontSize[1] / 3 + listFontSize[1] * (scroll - listInterval) / listFontSize[0], canvas.width / 3);
+    ctx.fillText(musicList[musicListIndex]["title"], canvas.width / 4, canvas.height / 2 + listFontSize[1] / 3 + listFontSize[1] * scroll / listFontSize[0], canvas.width / 3);
+    ctx.fillText(musicList[(musicListIndex + 1) % musicList.length]["title"], canvas.width / 4, canvas.height / 2 + listFontSize[1] / 3 + listFontSize[1] * (scroll + listInterval) / listFontSize[0], canvas.width / 3);
     //リスト 後ろのレイヤー
     ctx.globalCompositeOperation = "destination-over";
     for (let i = -1; canvas.height / 2 + listInterval * i + 11 + scroll > 0; i--){
@@ -330,27 +332,54 @@ function drawList(){
         ctx.font = `${listFontSize[0]}px monospace`;
         ctx.fillStyle = "#ffffff";
         ctx.textAlign = "center";
-        ctx.fillText(musicList[((musicListIndex + i) % musicList.length + musicList.length) % musicList.length]["title"], canvas.width / 4, canvas.height / 2 + listInterval * i + listFontSize[0] / 3 + scroll, 560);
+        ctx.fillText(musicList[((musicListIndex + i) % musicList.length + musicList.length) % musicList.length]["title"], canvas.width / 4, canvas.height / 2 + listInterval * i + listFontSize[0] / 3 + scroll, canvas.width / 3);
     }
     for (let i = 0; canvas.height / 2 + listInterval * i + 11 + scroll < canvas.height; i++){
         ctx.beginPath();
         ctx.font = `${listFontSize[0]}px monospace`;
         ctx.fillStyle = "#ffffff";
         ctx.textAlign = "center";
-        ctx.fillText(musicList[(musicListIndex + i) % musicList.length]["title"], canvas.width / 4, canvas.height / 2 + listInterval * i + listFontSize[0] / 3 + scroll, 560);
+        ctx.fillText(musicList[(musicListIndex + i) % musicList.length]["title"], canvas.width / 4, canvas.height / 2 + listInterval * i + listFontSize[0] / 3 + scroll, canvas.width / 3);
     }
     //リスト背景
     ctx.beginPath();
     ctx.fillStyle = "rgba(255, 255, 255, 0.1)";
-    ctx.strokeStyle = "#cccccc";
     ctx.lineWidth = 4;
-    ctx.rect(canvas.width / 4 - 280, -10, 560, canvas.height + 10);
+    ctx.rect(canvas.width / 4 - canvas.width / 6, -10, canvas.width / 3, canvas.height + 10);
     ctx.fill();
 
 
     //難易度選択
     ctx.globalCompositeOperation = "source-over";
-    
+    ctx.beginPath();
+    ctx.lineWidth = 15;
+    ctx.fillStyle = "#ffffff";
+    ctx.strokeStyle = "rgba(255, 255, 255, 0.1)";
+    ctx.strokeRect(canvas.width * 13 / 24 - 120, canvas.height * 5 / 6 - 100, 240, 160);
+    ctx.strokeRect(canvas.width * 17 / 24 - 120, canvas.height * 5 / 6 - 100, 240, 160);
+    ctx.strokeRect(canvas.width * 21 / 24 - 120, canvas.height * 5 / 6 - 100, 240, 160);
+    ctx.font = "100px monospace";
+    ctx.fillText(String(musicList[musicListIndex]["level"][0]), canvas.width * 13 / 24, canvas.height * 5 / 6);
+    ctx.font = "40px monospace";
+    ctx.fillText("Easy", canvas.width * 13 / 24, canvas.height * 5 / 6 + 40);
+    ctx.font = "100px monospace";
+    ctx.fillText(String(musicList[musicListIndex]["level"][1]), canvas.width * 17 / 24, canvas.height * 5 / 6);
+    ctx.font = "40px monospace";
+    ctx.fillText("Normal", canvas.width * 17 / 24, canvas.height * 5 / 6 + 40);
+    ctx.font = "100px monospace";
+    ctx.fillText(String(musicList[musicListIndex]["level"][2]), canvas.width * 21 / 24, canvas.height * 5 / 6);
+    ctx.font = "40px monospace";
+    ctx.fillText("Hard", canvas.width * 21 / 24, canvas.height * 5 / 6 + 40);
+
+    ctx.strokeStyle = levelColor;
+    ctx.strokeRect(levelX - 120, canvas.height * 5 / 6 - 100, 240, 160);
+    ctx.fillStyle = levelColor;
+    ctx.font = "50px monospace";
+    ctx.fillText("Press Enter to start", canvas.width * 17 / 24, canvas.height * 5 / 6 + 140);
+
+    //画像
+    console.log(images[musicListIndex]);
+    ctx.drawImage(images[musicListIndex], canvas.width * 14 / 24, canvas.height / 4 - canvas.width / 8, canvas.width / 4, canvas.width / 4);
 }
 function drawGame(){
     ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -530,26 +559,23 @@ function hitEffect(nowNote, r, g, b){
 let scrollAnimation;
 let moving = false;
 document.addEventListener("keydown", function(e){
-    if (e.keyCode == 13 && startTime == 0){//仮スタート
-        drawList();
-        //game();
-    }
     if (situation == 1 && !moving){
         if (e.keyCode == 38){//上矢印
             moving = true;
+            scroll = -listInterval;
+            sixRandoms = [];
+            for (let i = 0; i < 6; i++){
+                sixRandoms.push(Math.random() * 2 - 1);
+            }
+            if (musicListIndex == 0){
+                musicListIndex = musicList.length - 1;
+            }else{
+                musicListIndex--;
+            }
             scrollAnimation = setInterval(() => {
-                if (scroll >= listInterval){
+                if (scroll >= 0){
                     clearInterval(scrollAnimation);
                     scroll = 0;
-                    sixRandoms = [];
-                    for (let i = 0; i < 6; i++){
-                        sixRandoms.push(Math.random() * 2 - 1);
-                    }
-                    if (musicListIndex == 0){
-                        musicListIndex = musicList.length - 1;
-                    }else{
-                        musicListIndex--;
-                    }
                     drawList();
                     moving = false;
                 }else{
@@ -560,19 +586,20 @@ document.addEventListener("keydown", function(e){
         }
         if (e.keyCode == 40){//下矢印
             moving = true;
+            scroll = listInterval;
+            sixRandoms = [];
+            for (let i = 0; i < 6; i++){
+                sixRandoms.push(Math.random() * 2 - 1);
+            }
+            if (musicListIndex == musicList.length - 1){
+                musicListIndex = 0;
+            }else{
+                musicListIndex++;
+            }
             scrollAnimation = setInterval(() => {
-                if (scroll <= -listInterval){
+                if (scroll <= 0){
                     clearInterval(scrollAnimation);
                     scroll = 0;
-                    sixRandoms = [];
-                    for (let i = 0; i < 6; i++){
-                        sixRandoms.push(Math.random() * 2 - 1);
-                    }
-                    if (musicListIndex == musicList.length - 1){
-                        musicListIndex = 0;
-                    }else{
-                        musicListIndex++;
-                    }
                     drawList();
                     moving = false;
                 }else{
@@ -580,6 +607,62 @@ document.addEventListener("keydown", function(e){
                     drawList();
                 }
             }, 10);
+        }
+        if (e.keyCode == 37 && level != 0){//左矢印
+            moving = true;
+            level--;
+            let x = 1;
+            if (level == 0){
+                scrollAnimation = setInterval(() => {
+                    levelX = canvas.width * 13 / 24 + x ** 2 * (canvas.width * 17 / 24 - canvas.width * 13 / 24);
+                    levelColor = `rgb(${255 * x ** 2}, 255, ${255 * (1 - x) ** 2})`;
+                    x -= 0.05;
+                    if (x <= -0.05){
+                        clearInterval(scrollAnimation);
+                        moving = false;
+                    }
+                    drawList();
+                }, 10);
+            }else{
+                scrollAnimation = setInterval(() => {
+                    levelX = canvas.width * 17 / 24 + x ** 2 * (canvas.width * 21 / 24 - canvas.width * 17 / 24);
+                    levelColor = `rgb(255 ,${255 * (1 - x) ** 2} , ${255 * x ** 2})`;
+                    x -= 0.05;
+                    if (x <= -0.05){
+                        clearInterval(scrollAnimation);
+                        moving = false;
+                    }
+                    drawList();
+                }, 10);
+            }
+        }
+        if (e.keyCode == 39 && level != 2){//右矢印
+            moving = true;
+            level++;
+            let x = 1;
+            if (level == 1){
+                scrollAnimation = setInterval(() => {
+                    levelX = canvas.width * 17 / 24 - x ** 2 * (canvas.width * 17 / 24 - canvas.width * 13 / 24);
+                    levelColor = `rgb(${255 * (1 - x) ** 2}, 255, ${255 * x ** 2})`;
+                    x -= 0.05;
+                    if (x <= -0.05){
+                        clearInterval(scrollAnimation);
+                        moving = false;
+                    }
+                    drawList();
+                }, 10);
+            }else{
+                scrollAnimation = setInterval(() => {
+                    levelX = canvas.width * 21 / 24 - x ** 2 * (canvas.width * 21 / 24 - canvas.width * 17 / 24);
+                    levelColor = `rgb(255 ,${255 * x ** 2} , ${255 * (1 - x) ** 2})`;
+                    x -= 0.05;
+                    if (x <= -0.05){
+                        clearInterval(scrollAnimation);
+                        moving = false;
+                    }
+                    drawList();
+                }, 10);
+            }
         }
     }
     if (situation == 2){
@@ -636,3 +719,12 @@ document.addEventListener("keydown", function(e){
 document.addEventListener("keyup", function(e){
     keyPressed[e.keyCode] = false;
 });
+
+let images = [];
+for(let i = 0; i < musicList.length; i++){
+    images.push(new Image());
+    images[i].src = `https://saltbecon.github.io/rhythm_game/images/${musicList[i]["imagefile"]}`;
+}
+images[musicList.length - 1].onload = () => {
+    drawList();
+}
