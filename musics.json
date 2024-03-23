@@ -25,7 +25,7 @@
         "chart":"dddd",
         "musicfile":"正月のやつ.ogg",
         "chartfile":"正月のやつ.json",
-        "imagefile":"bookshelf1.png",
+        "imagefile":"bookshelf2.png",
         "level":[0, 0, 7],
         "demo":[20, 50]
     },
@@ -35,7 +35,7 @@
         "chart":"dddd",
         "musicfile":"正月のやつ.ogg",
         "chartfile":"正月のやつ.json",
-        "imagefile":"bookshelf1.png",
+        "imagefile":"bookshelf2.png",
         "level":[0, 0, 7],
         "demo":[20, 50]
     }
