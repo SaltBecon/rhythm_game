@@ -1,6 +1,6 @@
 import musicList from "/musics.json" assert { type: "json" };
-const root = "/"//ローカル
-//const root = "https://saltbecon.github.io/rhythm_game/"//GitHub
+//const root = "/"//ローカル
+const root = "https://saltbecon.github.io/rhythm_game/"//GitHub
 //選曲用
 let musicListIndex = 0;
 let level = "easy";
