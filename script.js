@@ -1,4 +1,4 @@
-import musicList from "/musics.json" assert { type: "json" };
+import musicList from "https://saltbecon.github.io/rhythm_game/musics.json" assert { type: "json" };
 //const root = "/"//ローカル
 const root = "https://saltbecon.github.io/rhythm_game/"//GitHub
 //選曲用
