@@ -1,7 +1,7 @@
-$.getJSON("/musics.json", function(musicList){
+$.getJSON("https://saltbecon.github.io/rhythm_game/musics.json", function(musicList){
     ;(function(){
-        const root = "/"//ローカル
-        //const root = "https://saltbecon.github.io/rhythm_game/"//GitHub
+        //const root = "/"//ローカル
+        const root = "https://saltbecon.github.io/rhythm_game/"//GitHub
         //選曲用
         let musicListIndex = 0;
         let level = "easy";
