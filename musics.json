@@ -13,10 +13,10 @@
         "title":"Dance With Silence",
         "music":"かめりあ",
         "chart":{"hard":"SaltBecon"},
-        "musicfile":"Dance With Silence.mp3",
+        "musicfile":"Dance With Silence.wav",
         "chartfile":"Dance With Silence.json",
         "imagefile":"TeraIO.png",
-        "gommickfile":["Dance With Silence.json"],
+        "gimmickfile":"Dance With Silence.json",
         "level":{"hard":10},
         "demo":[54.375, 84.375]
     },
@@ -38,16 +38,6 @@
         "chartfile":"正月のやつ.json",
         "imagefile":"bookshelf2.png",
         "level":{"hard":7},
-        "demo":[20, 50]
-    },
-    {
-        "title":"長すぎるタイトルの曲が正常に表示されるかテストするためのデータ。たとえば「Compute It With Some Devilish Alcoholic Steampunk Engines」とか。",
-        "music":"cccc",
-        "chart":{"hard":"dddd"},
-        "musicfile":"正月のやつ.wav",
-        "chartfile":"正月のやつ.json",
-        "imagefile":"bookshelf2.png",
-        "level":{"hard":"難易度まで長すぎるとさすがに読んでて疲れるね"},
         "demo":[20, 50]
     }
 ]
