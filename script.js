@@ -32,7 +32,6 @@ $.getJSON("https://saltbecon.github.io/rhythm_game/musics.json", function(musicL
     const judgmentDelay = -50;//押したタイミングに足すやつ(ms)見た目と判定のずれ
     const offset = -50;//ノーツと曲のずれ(ms)
 
-
     //描画用
     const canvas = document.getElementById("mainCanvas");
     const ctx = canvas.getContext("2d");
