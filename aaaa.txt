@@ -1,0 +1,26 @@
+notes
+0 タイミング timing
+1 対応キー keys
+2 種類 type
+3 色 color
+4 判定開始時間 judgeStart
+5 判定終了時間 judgeEnd
+6 始点(段) startRow
+7 始点(列) startColumn
+8 終点(段) endRaw
+9 終点(列) endColumn
+10(始点)HS hs
+11(ロングノーツID) longNoteId
+
+longNotes
+0 ロングノーツID longNoteId
+1 ノーツ番号 noteNumber
+2 開始タイミング start
+3 終了タイミング end
+4 対応キー keys
+5 始点(段) startRow
+6 始点(列) startColumn
+7 終点(段) endRaw
+8 終点(列) endColumn
+9 始点HS startHs
+10終点HS endHs
