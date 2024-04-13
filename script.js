@@ -32,6 +32,7 @@ $.getJSON("https://saltbecon.github.io/rhythm_game/musics.json", function(musicL
     const judgmentDelay = -50;//押したタイミングに足すやつ(ms)見た目と判定のずれ
     const offset = -50;//ノーツと曲のずれ(ms)
 
+
     //描画用
     const canvas = document.getElementById("mainCanvas");
     const ctx = canvas.getContext("2d");
@@ -58,7 +59,9 @@ $.getJSON("https://saltbecon.github.io/rhythm_game/musics.json", function(musicL
         if (chart["data"]["scroll"] != undefined){scroll = chart["data"]["scroll"]};
         ms = 0;
         //ノーツデータ作成
+        let shosetsuCount = 0;
         chart[level].forEach((shosetsu) => {//小節ごと
+            shosetsuCount++;
             if (shosetsu.constructor == Array){
                 let notObjectThingsCountOfShosetsu = shosetsu.filter((x) => x.constructor != Object).length;
                 shosetsu.forEach((beat) => {//拍ごと
@@ -299,25 +302,49 @@ $.getJSON("https://saltbecon.github.io/rhythm_game/musics.json", function(musicL
                         break;
                 }
                 let y = lineY - setSpeed * notes[i]["hs"] * scrolls[Math.round(notes[i]["timing"] * frameRate / 1000 + frameOffset)] * ((notes[i]["timing"] * frameRate / 1000 + frameOffset) - Math.round(notes[i]["timing"] * frameRate / 1000 + frameOffset));
+                let relativeY = 0;
+                let nowJ = -1;
+                let lastBorderFrame = Math.round(notes[i]["timing"] * frameRate / 1000 + frameOffset);//ノーツの動きが変わる境目
+                let nextBorderFrame = Math.round(notes[i]["timing"] * frameRate / 1000 + frameOffset);
                 for (let frame = Math.round(notes[i]["timing"] * frameRate / 1000 + frameOffset); frame >= 0; frame--){
                     if (y < 0){
                         continue;
                     }
-                    frames[frame].push([i, 0, offset + notes[i]["startColumn"] * (keyMargin + keyPadding), y, offset + notes[i]["endColumn"] * (keyMargin + keyPadding) + keyPadding, y, mainColor, 20]);
+                    frames[frame].push([i, 0, offset + notes[i]["startColumn"] * (keyMargin + keyPadding), y + relativeY, offset + notes[i]["endColumn"] * (keyMargin + keyPadding) + keyPadding, y + relativeY, mainColor, 20]);
                     if (notes[i]["gimmicks"] == undefined){//ギミック指定なし
                         y -= setSpeed * notes[i]["hs"] * scrolls[frame];
                     }else{//ギミック指定あり
-                        let borderFrame = Math.round(notes[i]["timing"] * frameRate / 1000 + frameOffset);//ノーツの動きが変わる境目
+                        let acceleration = 1;
+                        let cumulativeTime = 0;
                         for (let j = notes[i]["gimmicks"].length - 1; j >= 0; j--){
-                            if (notes[i]["gimmicks"][j]["time"] == undefined){
-                                borderFrame = frame - 1//強制的に次のif文に引っかからせる
-                            }else{
-                                borderFrame -= notes[i]["gimmicks"][j]["time"][0] / notes[i]["gimmicks"][j]["time"][1] * (frameRate * 240 / bpms[frame]);
+                            if (nowJ == -1){
+                                nowJ = j;
                             }
-                            if (frame >= borderFrame){
-                                y -= notes[i]["gimmicks"][j]["speed"]
+                            if (notes[i]["gimmicks"][j]["time"] == undefined){
+                                lastBorderFrame = frame - 1//強制的に次のif文に引っかからせる
+                            }else{
+                                lastBorderFrame = Math.round(notes[i]["timing"] * frameRate / 1000 + frameOffset);
+                                cumulativeTime += notes[i]["gimmicks"][j]["time"][0] / notes[i]["gimmicks"][j]["time"][1];
+                                for (let borderTime = 0; borderTime < cumulativeTime; borderTime += (1 / frameRate) / (240 / bpms[lastBorderFrame])){
+                                    lastBorderFrame--;
+                                }
+                            }
+                            if (frame >= lastBorderFrame){
+                                if (j != nowJ){
+                                    y += relativeY;
+                                    relativeY = 0;
+                                    nowJ--;
+                                }
+                                if (notes[i]["gimmicks"][j]["acceleration"] == undefined){
+                                    acceleration = 0;
+                                }else{
+                                    acceleration = notes[i]["gimmicks"][j]["acceleration"];
+                                }
+                                //relativeY -= notes[i]["gimmicks"][j]["speed"];//元の
+                                relativeY = notes[i]["gimmicks"][j]["speed"] * (frame - lastBorderFrame) * (acceleration * (frame - lastBorderFrame) / (nextBorderFrame - lastBorderFrame) + 1 - acceleration) - notes[i]["gimmicks"][j]["speed"] * (nextBorderFrame - lastBorderFrame);
                                 break;
                             }
+                            nextBorderFrame = lastBorderFrame;
                         }
                     }
                 }
@@ -822,7 +849,6 @@ $.getJSON("https://saltbecon.github.io/rhythm_game/musics.json", function(musicL
                     }).then(() => {
                         load(chart);
                     }).then(() => {
-                        console.log(notes);
                         game();
                     });
                 }
