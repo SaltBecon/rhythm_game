@@ -1,8 +1,11 @@
 {
     "intro_side":[
         {
+            "speed":20
+        },
+        {
             "time":[1, 4],
-            "speed":9
+            "speed":5
         },
         {
             "time":[1, 4],
